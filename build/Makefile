@@ -129,29 +129,29 @@ my_opengl_project/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/build
 .PHONY : my_opengl_project/fast
 
-glad.o: glad.c.o
-.PHONY : glad.o
+lib/glad.o: lib/glad.c.o
+.PHONY : lib/glad.o
 
 # target to build an object file
-glad.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/glad.c.o
-.PHONY : glad.c.o
+lib/glad.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/lib/glad.c.o
+.PHONY : lib/glad.c.o
 
-glad.i: glad.c.i
-.PHONY : glad.i
+lib/glad.i: lib/glad.c.i
+.PHONY : lib/glad.i
 
 # target to preprocess a source file
-glad.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/glad.c.i
-.PHONY : glad.c.i
+lib/glad.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/lib/glad.c.i
+.PHONY : lib/glad.c.i
 
-glad.s: glad.c.s
-.PHONY : glad.s
+lib/glad.s: lib/glad.c.s
+.PHONY : lib/glad.s
 
 # target to generate assembly for a file
-glad.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/glad.c.s
-.PHONY : glad.c.s
+lib/glad.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/lib/glad.c.s
+.PHONY : lib/glad.c.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... my_opengl_project"
-	@echo "... glad.o"
-	@echo "... glad.i"
-	@echo "... glad.s"
+	@echo "... lib/glad.o"
+	@echo "... lib/glad.i"
+	@echo "... lib/glad.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

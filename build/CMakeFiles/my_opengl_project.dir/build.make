@@ -86,30 +86,30 @@ CMakeFiles/my_opengl_project.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/my_opengl_project.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/storm/projects/opengl-project/src/main.cpp -o CMakeFiles/my_opengl_project.dir/src/main.cpp.s
 
-CMakeFiles/my_opengl_project.dir/glad.c.o: CMakeFiles/my_opengl_project.dir/flags.make
-CMakeFiles/my_opengl_project.dir/glad.c.o: /home/storm/projects/opengl-project/glad.c
-CMakeFiles/my_opengl_project.dir/glad.c.o: CMakeFiles/my_opengl_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/storm/projects/opengl-project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/my_opengl_project.dir/glad.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/my_opengl_project.dir/glad.c.o -MF CMakeFiles/my_opengl_project.dir/glad.c.o.d -o CMakeFiles/my_opengl_project.dir/glad.c.o -c /home/storm/projects/opengl-project/glad.c
+CMakeFiles/my_opengl_project.dir/lib/glad.c.o: CMakeFiles/my_opengl_project.dir/flags.make
+CMakeFiles/my_opengl_project.dir/lib/glad.c.o: /home/storm/projects/opengl-project/lib/glad.c
+CMakeFiles/my_opengl_project.dir/lib/glad.c.o: CMakeFiles/my_opengl_project.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/storm/projects/opengl-project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/my_opengl_project.dir/lib/glad.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/my_opengl_project.dir/lib/glad.c.o -MF CMakeFiles/my_opengl_project.dir/lib/glad.c.o.d -o CMakeFiles/my_opengl_project.dir/lib/glad.c.o -c /home/storm/projects/opengl-project/lib/glad.c
 
-CMakeFiles/my_opengl_project.dir/glad.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/my_opengl_project.dir/glad.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/storm/projects/opengl-project/glad.c > CMakeFiles/my_opengl_project.dir/glad.c.i
+CMakeFiles/my_opengl_project.dir/lib/glad.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/my_opengl_project.dir/lib/glad.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/storm/projects/opengl-project/lib/glad.c > CMakeFiles/my_opengl_project.dir/lib/glad.c.i
 
-CMakeFiles/my_opengl_project.dir/glad.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/my_opengl_project.dir/glad.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/storm/projects/opengl-project/glad.c -o CMakeFiles/my_opengl_project.dir/glad.c.s
+CMakeFiles/my_opengl_project.dir/lib/glad.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/my_opengl_project.dir/lib/glad.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/storm/projects/opengl-project/lib/glad.c -o CMakeFiles/my_opengl_project.dir/lib/glad.c.s
 
 # Object files for target my_opengl_project
 my_opengl_project_OBJECTS = \
 "CMakeFiles/my_opengl_project.dir/src/main.cpp.o" \
-"CMakeFiles/my_opengl_project.dir/glad.c.o"
+"CMakeFiles/my_opengl_project.dir/lib/glad.c.o"
 
 # External object files for target my_opengl_project
 my_opengl_project_EXTERNAL_OBJECTS =
 
 my_opengl_project: CMakeFiles/my_opengl_project.dir/src/main.cpp.o
-my_opengl_project: CMakeFiles/my_opengl_project.dir/glad.c.o
+my_opengl_project: CMakeFiles/my_opengl_project.dir/lib/glad.c.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/build.make
 my_opengl_project: CMakeFiles/my_opengl_project.dir/compiler_depend.ts
 my_opengl_project: /usr/lib/libglfw.so.3.4

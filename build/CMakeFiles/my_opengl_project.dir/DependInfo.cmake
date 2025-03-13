@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/storm/projects/opengl-project/glad.c" "CMakeFiles/my_opengl_project.dir/glad.c.o" "gcc" "CMakeFiles/my_opengl_project.dir/glad.c.o.d"
+  "/home/storm/projects/opengl-project/lib/glad.c" "CMakeFiles/my_opengl_project.dir/lib/glad.c.o" "gcc" "CMakeFiles/my_opengl_project.dir/lib/glad.c.o.d"
   "/home/storm/projects/opengl-project/src/main.cpp" "CMakeFiles/my_opengl_project.dir/src/main.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/src/main.cpp.o.d"
   "" "my_opengl_project" "gcc" "CMakeFiles/my_opengl_project.dir/link.d"
   )

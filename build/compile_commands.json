@@ -7,8 +7,8 @@
 },
 {
   "directory": "/home/storm/projects/opengl-project/build",
-  "command": "/usr/bin/cc  -I/home/storm/projects/opengl-project/include -g -o CMakeFiles/my_opengl_project.dir/glad.c.o -c /home/storm/projects/opengl-project/glad.c",
-  "file": "/home/storm/projects/opengl-project/glad.c",
-  "output": "CMakeFiles/my_opengl_project.dir/glad.c.o"
+  "command": "/usr/bin/cc  -I/home/storm/projects/opengl-project/include -g -o CMakeFiles/my_opengl_project.dir/lib/glad.c.o -c /home/storm/projects/opengl-project/lib/glad.c",
+  "file": "/home/storm/projects/opengl-project/lib/glad.c",
+  "output": "CMakeFiles/my_opengl_project.dir/lib/glad.c.o"
 }
 ]

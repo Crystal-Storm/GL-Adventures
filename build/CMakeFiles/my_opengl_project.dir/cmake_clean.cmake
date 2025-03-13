@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/my_opengl_project.dir/link.d"
-  "CMakeFiles/my_opengl_project.dir/glad.c.o"
-  "CMakeFiles/my_opengl_project.dir/glad.c.o.d"
+  "CMakeFiles/my_opengl_project.dir/lib/glad.c.o"
+  "CMakeFiles/my_opengl_project.dir/lib/glad.c.o.d"
   "CMakeFiles/my_opengl_project.dir/src/main.cpp.o"
   "CMakeFiles/my_opengl_project.dir/src/main.cpp.o.d"
   "my_opengl_project"

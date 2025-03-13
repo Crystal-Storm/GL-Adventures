@@ -10,11 +10,8 @@ find_package(glfw3 REQUIRED)
 # Include directories
 include_directories(include)
 
-# Add Glad source file
-set(GLAD_SOURCE glad.c)
-
 # Add executable
-add_executable(my_opengl_project src/main.cpp ${GLAD_SOURCE})
+add_executable(my_opengl_project src/main.cpp lib/glad.c)
 
 # Link libraries
 target_link_libraries(my_opengl_project glfw)
