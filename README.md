@@ -12,6 +12,4 @@ Open VSCode
 
 Get CMake Tools
 
-open A terminal and run the following command
-
-"cmake -B ./build"
+open vscode command palette run "CMake: Build"
