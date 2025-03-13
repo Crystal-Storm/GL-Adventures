@@ -1,0 +1,3 @@
+/home/storm/projects/opengl-project/build/CMakeFiles/my_opengl_project.dir
+/home/storm/projects/opengl-project/build/CMakeFiles/edit_cache.dir
+/home/storm/projects/opengl-project/build/CMakeFiles/rebuild_cache.dir
