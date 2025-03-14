@@ -21,7 +21,7 @@ const std::string gFragmentShaderSource =
     "#version 410 core\n"
     "out vec4 color;\n"
     "void main(){\n"
-    "    color = vec4(1.f,.5f,.0f,1.f);\n"
+    "    color = vec4(.5f,.3f,.5f,1.f);\n"
     "}";
 
 // VAO
@@ -158,7 +158,7 @@ void PreDraw(){
     glDisable(GL_CULL_FACE);
 
     glViewport(0,0,gScreenWidth,gScreenHeight);
-    glClearColor(1.f,1.f,.0f,1.f);
+    glClearColor(.2f,.0f,.1f,1.f);
 
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
