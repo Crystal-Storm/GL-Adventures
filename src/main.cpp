@@ -2,27 +2,14 @@
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
 #include <vector>
+#include <string>
+#include <fstream>
 
 // Globals
 int gScreenWidth = 640;
 int gScreenHeight = 480;
 SDL_Window* gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
-
-// Vertex and Fragment Shaders
-const std::string gVertexShaderSource =
-    "#version 410 core\n"
-    "in vec4 position;\n"
-    "void main(){\n"
-    "    gl_Position = vec4(position.x, position.y, position.z, position.w);\n"
-    "}";
-
-const std::string gFragmentShaderSource =
-    "#version 410 core\n"
-    "out vec4 color;\n"
-    "void main(){\n"
-    "    color = vec4(.5f,.3f,.5f,1.f);\n"
-    "}";
 
 // VAO
 GLuint gVertexArrayObject = 0;
@@ -33,6 +20,23 @@ GLuint gVertexBufferObject = 0;
 GLuint gGraphicsPipelineShaderProgram = 0;
 
 bool gQuit = false;
+
+std::string LoadShaderAsString(const std::string& filename){
+    
+    std::string result = "";
+
+    std::string line = "";
+    std::ifstream myFile(filename.c_str());
+
+    if (myFile.is_open()){
+        while (std::getline(myFile, line)){
+            result+=line+"\n";
+        }
+        myFile.close();
+    }
+
+    return result;
+}
 
 void GetOpenGLVersionInfo(){
     std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
@@ -103,7 +107,10 @@ GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::str
 }
 
 void CreateGraphicsPipeline(){
-    gGraphicsPipelineShaderProgram = CreateShaderProgram(gVertexShaderSource, gFragmentShaderSource);
+    std::string vertexShaderSource = LoadShaderAsString("./shaders/vertex.glsl");
+    std::string fragmentShaderSource = LoadShaderAsString("./shaders/fragment.glsl");
+
+    gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 
 void InitializeProgram(){
@@ -199,14 +206,20 @@ void CleanUp(){
 
 int main(int argc, char* argv[]){
 
+    // Setup graphics program
     InitializeProgram();
 
+    // Set up geometry, VAO, and VBO
     VertexSpecification();
 
+    // Create graphics pipeline
+    // At the moment we set up vertext and fragment shaders
     CreateGraphicsPipeline();
 
+    // Call main loop
     MainLoop();
 
+    // When program terminates clean up
     CleanUp();
 
     return 0;
