@@ -1,6 +1,6 @@
-# OpenGL installation
+## OpenGL installation
 
-- Windows
+### Windows
 
 Get MSYS2: https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
 
@@ -14,7 +14,7 @@ Get CMake Tools
 
 open vscode command palette run "CMake: Build"
 
-- Linux
+### Linux
 
 Install the following packages:
 
@@ -24,6 +24,6 @@ Install the following packages:
 
 + sdl2
 
-- Notes
+## Notes
 
 At the moment I am still figuring everything out, and am choosing between glfw and sdl2 or 3 as the framework(?).
