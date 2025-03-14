@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 # Find SDL2
 find_package(SDL2 REQUIRED)
 
-# Include directories
-include_directories(include)
+# # Include directories
+# include_directories(include)
 
 # Add executable
 add_executable(opengl_project src/main.cpp)
