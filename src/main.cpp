@@ -50,7 +50,7 @@ void Input(){
 
     while(SDL_PollEvent(&e) != 0){
         if (e.type==SDL_QUIT){
-            // std::cout << "Goodbye" << std::endl;
+            std::cout << "Goodbye" << std::endl;
             gQuit = true;
         }
     }
@@ -88,7 +88,6 @@ void CleanUp(){
 
 int main(int argc, char* argv[]){
 
-    std::cout << "Test" << std::endl;
     InitializeProgram();
 
     MainLoop();
