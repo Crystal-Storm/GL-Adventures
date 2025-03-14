@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <glad/glad.h>
 
 // Globals
 int gScreenWidth = 640;
@@ -9,12 +10,12 @@ SDL_GLContext gOpenGLContext = nullptr;
 
 bool gQuit = false;
 
-// void GetOpenGLVersionInfo(){
-//     std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-//     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-//     std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
-//     std::cout << "Shading Language: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-// }
+void GetOpenGLVersionInfo(){
+    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "Shading Language: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+}
 
 void InitializeProgram(){
     if(SDL_Init(SDL_INIT_VIDEO)<0){
@@ -42,6 +43,14 @@ void InitializeProgram(){
         std::cout << "OpenGL context not available" << std::endl;
         exit(1);
     }
+
+    // Initialize Glad Library
+    if(!gladLoadGLLoader(SDL_GL_GetProcAddress)){
+        std::cout << "Glad failed to initialize" << std::endl;
+        exit(1);
+    }
+
+    GetOpenGLVersionInfo();
 }
 
 void Input(){
