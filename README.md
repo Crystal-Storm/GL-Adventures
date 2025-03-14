@@ -2,11 +2,11 @@
 
 ### Windows
 
-Get MSYS2: https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe
+Download the MSYS2 installer and run: https://www.msys2.org/
 
 + run "pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain mingw-w64-x86_64-glfw mingw-w64-x86_64-SDL2" in MSYS2
 
-+ Open environment variables (Open settings and search edit environment variables). Edit Path in user variables, add "C:\msys64\ucrt64\bin". Click ok and ok to close
++ Open environment variables (Open settings and search edit environment variables). Edit Path in user variables, add "C:\msys64\ucrt64\bin" (If you changed the default installation directory of MSYS2 then add "{Alternate path}\ucrt64\bin" instead). Click OK and OK to close.
 
 + Open VSCode and get CMake Tools extension
 
@@ -14,7 +14,7 @@ Get MSYS2: https://github.com/msys2/msys2-installer/releases/download/2025-02-21
 
 ### Linux
 
-Install the following packages:
+Make sure that the following packages are installed:
 
 + base-devel
 
