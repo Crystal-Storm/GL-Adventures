@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(OpenGLProject)
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
-
 # Find SDL2
 find_package(SDL2 REQUIRED)
 
