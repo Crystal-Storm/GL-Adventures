@@ -160,6 +160,8 @@ void PreDraw(){
     glViewport(0,0,gScreenWidth,gScreenHeight);
     glClearColor(1.f,1.f,.0f,1.f);
 
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
     glUseProgram(gGraphicsPipelineShaderProgram);
 
 
