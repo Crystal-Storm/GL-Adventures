@@ -15,6 +15,7 @@ SDL_GLContext gOpenGLContext = nullptr;
 GLuint gVertexArrayObject = 0;
 // VBO
 GLuint gVertexBufferObject = 0;
+GLuint gVertexBufferObject2 = 0;
 
 // Program Object (for shader)
 GLuint gGraphicsPipelineShaderProgram = 0;
@@ -47,26 +48,47 @@ void GetOpenGLVersionInfo(){
 
 void VertexSpecification(){
     // On the CPU
+    // Vertex Positions
     const std::vector<GLfloat> vertexPosition = {
-        -.8f,-.8f,.0f, // vertex 1
-        .8f,-.8f,.0f, // vertex 2
-        .0f,.8f,.0f // vertex 3
+        -0.8f,-0.8f,0.0f, // vertex 1
+        0.8f,-0.8f,0.0f, // vertex 2
+        0.0f,0.8f,0.0f // vertex 3
+    };
+
+    // Vertex Colors
+    const std::vector<GLfloat> vertexColors = {
+        1.0f,0.0f,0.0f, // color 1
+        0.0f,1.0f,0.0f, // color 2
+        0.0f,0.0f,1.0f, // color 3
     };
 
     // Start setting up things on the GPU
     glGenVertexArrays(1,&gVertexArrayObject);
     glBindVertexArray(gVertexArrayObject);
 
-    // Start Generating VBO
+    // Generate VBO, positions
     glGenBuffers(1, &gVertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, vertexPosition.size() * sizeof(GLfloat), vertexPosition.data(), GL_STATIC_DRAW);
 
+    // Generate VBO2, colors
+    glGenBuffers(1, &gVertexBufferObject2);
+    glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject2);
+    glBufferData(GL_ARRAY_BUFFER, vertexColors.size() * sizeof(GLfloat), vertexColors.data(), GL_STATIC_DRAW);
+
+    // Linking attributes in VAO
+    // Enable VAO 1
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
+    
     glBindVertexArray(0);
+    // Disable VAO 0
     glDisableVertexAttribArray(0);
+    // Disable VAO 1
+    glDisableVertexAttribArray(1);
 }
 
 GLuint CompileShader(GLuint type, const std::string& source){
