@@ -11,9 +11,8 @@ int gScreenHeight = 480;
 SDL_Window* gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
 
-// VAO
+// VAO and VBOs
 GLuint gVertexArrayObject = 0;
-// VBO
 GLuint gVertexBufferObject = 0;
 GLuint gVertexBufferObject2 = 0;
 
@@ -22,10 +21,9 @@ GLuint gGraphicsPipelineShaderProgram = 0;
 
 bool gQuit = false;
 
+// Function to load shader source code from file
 std::string LoadShaderAsString(const std::string& filename){
-    
-    std::string result = "";
-
+        std::string result = "";
     std::string line = "";
     std::ifstream myFile(filename.c_str());
 
@@ -46,8 +44,8 @@ void GetOpenGLVersionInfo(){
     std::cout << "Shading Language: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
+// Function to set up vertex data and buffers
 void VertexSpecification(){
-    // On the CPU
     // Vertex Positions
     const std::vector<GLfloat> vertexPosition = {
         -0.8f,-0.8f,0.0f, // vertex 1
@@ -62,26 +60,28 @@ void VertexSpecification(){
         0.0f,0.0f,1.0f, // color 3
     };
 
-    // Start setting up things on the GPU
+    // Generate and bind VAO's
+    
+    // Generate and bind VBO for positions at index 0
     glGenVertexArrays(1,&gVertexArrayObject);
     glBindVertexArray(gVertexArrayObject);
-
-    // Generate VBO Positions at index 0
     glGenBuffers(1, &gVertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, vertexPosition.size() * sizeof(GLfloat), vertexPosition.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    // Generate VBO Colors at index 1
+    // Generate and bind VBO for colors at index 1
     glGenBuffers(1, &gVertexBufferObject2);
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject2);
     glBufferData(GL_ARRAY_BUFFER, vertexColors.size() * sizeof(GLfloat), vertexColors.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+    // Send to vertex shader
     glBindVertexArray(0);
 
+    // Unbind VAO's
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 }
@@ -106,7 +106,6 @@ GLuint CompileShader(GLuint type, const std::string& source){
 }
 
 GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource){
-
     GLuint programObject = glCreateProgram();
 
     GLuint myVertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
@@ -130,6 +129,7 @@ void CreateGraphicsPipeline(){
     gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 
+// Function to initialize the SDL and OpenGL context
 void InitializeProgram(){
     if(SDL_Init(SDL_INIT_VIDEO)<0){
         std::cout << "SDL2 could not initialize video subsystem" << std::endl;
@@ -166,6 +166,7 @@ void InitializeProgram(){
     GetOpenGLVersionInfo();
 }
 
+// Function to handle input events
 void Input(){
     SDL_Event e;
 
@@ -187,12 +188,9 @@ void PreDraw(){
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
-
-
 }
 
 void Draw(){
-
     glBindVertexArray(gVertexArrayObject);
     glBindBuffer(GL_ARRAY_BUFFER,gVertexBufferObject);
 
@@ -202,9 +200,7 @@ void Draw(){
 void MainLoop(){
     while(!gQuit){
         Input();
-
         PreDraw();
-
         Draw();
 
         // Update screen
@@ -213,7 +209,6 @@ void MainLoop(){
 }
 
 void CleanUp(){
-
     // Destroy the window
     SDL_DestroyWindow(gGraphicsApplicationWindow);
 
@@ -222,7 +217,6 @@ void CleanUp(){
 }
 
 int main(int argc, char* argv[]){
-
     // Setup graphics program
     InitializeProgram();
 
@@ -230,7 +224,8 @@ int main(int argc, char* argv[]){
     VertexSpecification();
 
     // Create graphics pipeline
-    // At the moment we set up vertext and fragment shaders
+    // At the moment we set up the
+    // vertex and fragment shaders
     CreateGraphicsPipeline();
 
     // Call main loop
