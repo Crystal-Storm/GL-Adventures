@@ -6,6 +6,6 @@ layout(location=1) in vec3 colors;
 out vec3 vertexColor;
 
 void main(){
-    vertexColor = colors; // Correctly assign colors to vertexColor
+    vertexColor = colors;
     gl_Position = vec4(position, 1.0f);
 }

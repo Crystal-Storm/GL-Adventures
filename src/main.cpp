@@ -66,24 +66,22 @@ void VertexSpecification(){
     glGenVertexArrays(1,&gVertexArrayObject);
     glBindVertexArray(gVertexArrayObject);
 
-    // Generate VBO, positions
+    // Generate VBO Positions at index 0
     glGenBuffers(1, &gVertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, vertexPosition.size() * sizeof(GLfloat), vertexPosition.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    // Generate VBO2, colors
+    // Generate VBO Colors at index 1
     glGenBuffers(1, &gVertexBufferObject2);
     glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject2);
     glBufferData(GL_ARRAY_BUFFER, vertexColors.size() * sizeof(GLfloat), vertexColors.data(), GL_STATIC_DRAW);
-
-    // Linking attributes in VAO
-    // Enable VAO 1
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glBindVertexArray(0);
+
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 }
