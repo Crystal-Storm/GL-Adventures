@@ -12,3 +12,5 @@ add_executable(opengl_project src/main.cpp lib/glad.c)
 
 # Link libraries
 target_link_libraries(opengl_project SDL2::SDL2main SDL2::SDL2)
+
+add_compile_definitions(SHADER_PATH="${CMAKE_SOURCE_DIR}/shaders/")
