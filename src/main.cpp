@@ -21,17 +21,18 @@ GLuint gGraphicsPipelineShaderProgram = 0;
 bool gQuit = false;
 
 // Function to load shader source code from file
-std::string LoadShaderAsString(const std::string& filename){
-        std::string result = "";
+std::string LoadShaderAsString(const std::string filename){
+    std::string result = "";
     std::string line = "";
-    std::ifstream myFile(filename.c_str());
 
-    if (myFile.is_open()){
-        while (std::getline(myFile, line)){
-            result+=line+"\n";
-        }
-        myFile.close();
+    std::ifstream myFile(filename);
+
+    while (std::getline(myFile, line)){
+        result+=line+"\n";
     }
+    myFile.close();
+
+    std::cout << result << std::endl;
 
     return result;
 }
@@ -154,8 +155,8 @@ GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::str
 }
 
 void CreateGraphicsPipeline(){
-    std::string vertexShaderSource = LoadShaderAsString("./shaders/vertex.glsl");
-    std::string fragmentShaderSource = LoadShaderAsString("./shaders/fragment.glsl");
+    std::string vertexShaderSource = LoadShaderAsString("../shaders/vertex.glsl");
+    std::string fragmentShaderSource = LoadShaderAsString("../shaders/fragment.glsl");
 
     gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
