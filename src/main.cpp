@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <string>
 #include <fstream>
+#include <vector>
 
 // Globals
 int gScreenWidth = 640;
@@ -108,10 +109,6 @@ GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::str
     glAttachShader(programObject, myVertexShader);
     glAttachShader(programObject, myFragmentShader);
     glLinkProgram(programObject);
-
-    // Validate our program
-    glValidateProgram(programObject);
-    // TODO: glDetachShader, glDeleteShader
 
     return programObject;
 }
