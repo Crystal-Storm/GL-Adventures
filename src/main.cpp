@@ -97,6 +97,22 @@ GLuint CompileShader(GLuint type, const std::string& source){
     glShaderSource(shaderObject, 1, &charSource, nullptr);
     glCompileShader(shaderObject);
 
+    // Check for compilation errors, rewrite later
+    GLint isCompiled = 0;
+    glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &isCompiled);
+    if(isCompiled == GL_FALSE){
+        GLint maxLength = 0;
+        glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &maxLength);
+
+        std::vector<char> infoLog(maxLength);
+        glGetShaderInfoLog(shaderObject, maxLength, &maxLength, &infoLog[0]);
+
+        glDeleteShader(shaderObject);
+
+        std::cout << "Shader compilation error: " << std::string(infoLog.begin(), infoLog.end()) << std::endl;
+        exit(1);
+    }
+
     return shaderObject;
 }
 
@@ -109,6 +125,30 @@ GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::str
     glAttachShader(programObject, myVertexShader);
     glAttachShader(programObject, myFragmentShader);
     glLinkProgram(programObject);
+
+    // Check for linking errors, rewrite later
+    GLint isLinked = 0;
+    glGetProgramiv(programObject, GL_LINK_STATUS, &isLinked);
+    if(isLinked == GL_FALSE){
+        GLint maxLength = 0;
+        glGetProgramiv(programObject, GL_INFO_LOG_LENGTH, &maxLength);
+
+        std::vector<char> infoLog(maxLength);
+        glGetProgramInfoLog(programObject, maxLength, &maxLength, &infoLog[0]);
+
+        glDeleteProgram(programObject);
+        glDeleteShader(myVertexShader);
+        glDeleteShader(myFragmentShader);
+
+        std::cout << "Program linking error: " << std::string(infoLog.begin(), infoLog.end()) << std::endl;
+        exit(1);
+    }
+
+    // Detach and delete shaders after linking
+    glDetachShader(programObject, myVertexShader);
+    glDetachShader(programObject, myFragmentShader);
+    glDeleteShader(myVertexShader);
+    glDeleteShader(myFragmentShader);
 
     return programObject;
 }
