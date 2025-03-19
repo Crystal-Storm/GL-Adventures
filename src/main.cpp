@@ -47,19 +47,20 @@ void VertexSpecification(){
     // Vertex Positions
     GLfloat vertexData[] = {
         // Triangle 1
-        -0.8f,-0.8f,0.0f, // vertex 1
-        1.0f,0.0f,0.0f, // color 1
-        0.8f,-0.8f,0.0f, // vertex 2
-        0.0f,1.0f,0.0f, // color 2
-        -0.8f,0.8f,0.0f, // vertex 3
-        0.0f,0.0f,1.0f, // color 3
+        -0.8f,-0.8f,0.0f, // Bottom Left
+        1.0f,0.0f,0.0f, // Red
+        0.8f,-0.8f,0.0f, // Bottom Right
+        0.0f,1.0f,0.0f, // Green
+        -0.8f,0.8f,0.0f, // Top Left
+        0.0f,0.0f,1.0f, // Blue
+
         // Triangle 2
-        -0.8f,0.8f,0.0f, // vertex 3
-        0.0f,0.0f,1.0f, // color 3
-        0.8f,-0.8f,0.0f, // vertex 2
-        0.0f,1.0f,0.0f, // color 2
-        0.8f,0.8f,0.0f, // vertex 4
-        0.0f,0.0f,0.0f, // color 4
+        -0.8f,0.8f,0.0f, // Top Left
+        0.0f,0.0f,1.0f, // Blue
+        0.8f,-0.8f,0.0f, // Bottom Right
+        0.0f,1.0f,0.0f, // Green
+        0.8f,0.8f,0.0f, // Top Right
+        0.0f,0.0f,0.0f, // Black
     };
 
     // Generate and bind VAO and VBO
