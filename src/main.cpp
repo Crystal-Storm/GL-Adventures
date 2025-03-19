@@ -46,12 +46,20 @@ void GetOpenGLVersionInfo(){
 void VertexSpecification(){
     // Vertex Positions
     GLfloat vertexData[] = {
+        // Triangle 1
         -0.8f,-0.8f,0.0f, // vertex 1
         1.0f,0.0f,0.0f, // color 1
         0.8f,-0.8f,0.0f, // vertex 2
         0.0f,1.0f,0.0f, // color 2
-        0.0f,0.8f,0.0f, // vertex 3
+        -0.8f,0.8f,0.0f, // vertex 3
         0.0f,0.0f,1.0f, // color 3
+        // Triangle 2
+        -0.8f,0.8f,0.0f, // vertex 3
+        0.0f,0.0f,1.0f, // color 3
+        0.8f,-0.8f,0.0f, // vertex 2
+        0.0f,1.0f,0.0f, // color 2
+        0.8f,0.8f,0.0f, // vertex 4
+        0.0f,0.0f,0.0f, // color 4
     };
 
     // Generate and bind VAO and VBO
@@ -223,7 +231,7 @@ void PreDraw(){
 void Draw(){
     glBindVertexArray(gVertexArrayObject);
 
-    glDrawArrays(GL_TRIANGLES,0,3);
+    glDrawArrays(GL_TRIANGLES,0,6);
 
     glBindVertexArray(0);
 }
