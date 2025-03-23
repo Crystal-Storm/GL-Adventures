@@ -11,9 +11,10 @@ int gScreenHeight = 480;
 SDL_Window* gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
 
-// VAO and VBOs
+// VAO, VBO, and IBO
 GLuint gVertexArrayObject = 0;
 GLuint gVertexBufferObject = 0;
+GLuint gIndexBufferObject = 0;
 
 // Program Object (for shader)
 GLuint gGraphicsPipelineShaderProgram = 0;
@@ -46,32 +47,38 @@ void GetOpenGLVersionInfo(){
 void VertexSpecification(){
     // Vertex Positions
     GLfloat vertexData[] = {
-        // Triangle 1
+        // Triangle data for quad
         -0.8f,-0.8f,0.0f, // Bottom Left
         1.0f,0.0f,0.0f, // Red
         0.8f,-0.8f,0.0f, // Bottom Right
         0.0f,1.0f,0.0f, // Green
         -0.8f,0.8f,0.0f, // Top Left
         0.0f,0.0f,1.0f, // Blue
-
-        // Triangle 2
-        -0.8f,0.8f,0.0f, // Top Left
-        0.0f,0.0f,1.0f, // Blue
-        0.8f,-0.8f,0.0f, // Bottom Right
-        0.0f,1.0f,0.0f, // Green
         0.8f,0.8f,0.0f, // Top Right
         0.0f,0.0f,0.0f, // Black
     };
 
-    // Generate and bind VAO and VBO
-    glGenVertexArrays(1,&gVertexArrayObject);
-    glGenBuffers(1, &gVertexBufferObject);
+    GLuint indexData[] = {
+        0,1,2,
+        2,1,3
+    };
 
-    // Bind VAO and VBO
+    // Setup VAO
+    glGenVertexArrays(1,&gVertexArrayObject);
     glBindVertexArray(gVertexArrayObject);
-    glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
     
+    // Setup VBO
+    glGenBuffers(1, &gVertexBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
+
+    // Send vertex data to GPU
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+
+    // Setup IBO
+    glGenBuffers(1, &gIndexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+
     // Locations
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (void*)0);
     glEnableVertexAttribArray(0);
@@ -232,7 +239,8 @@ void PreDraw(){
 void Draw(){
     glBindVertexArray(gVertexArrayObject);
 
-    glDrawArrays(GL_TRIANGLES,0,6);
+    // glDrawArrays(GL_TRIANGLES,0,6);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glBindVertexArray(0);
 }
