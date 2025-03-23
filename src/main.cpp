@@ -11,6 +11,19 @@ int gScreenHeight = 480;
 SDL_Window* gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
 
+// Error checking
+static void GLClearError(){
+    while(glGetError()!=GL_NO_ERROR);
+}
+static bool GLCheckError(const char* function, int line){
+    while(GLenum error = glGetError()){
+        std::cout << "OpenGL Error: " << error << ", Line: " << line << ", Function: " << function << std::endl;
+        return true;
+    }
+    return false;
+}
+#define GLCheck(x) GLClearError(); x; GLCheckError(#x, __LINE__);
+
 // VAO, VBO, and IBO
 GLuint gVertexArrayObject = 0;
 GLuint gVertexBufferObject = 0;
