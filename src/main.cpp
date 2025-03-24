@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <glm/glm.hpp>
 
 // Globals
 int gScreenWidth = 640;
