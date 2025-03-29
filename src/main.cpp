@@ -183,8 +183,10 @@ GLuint CreateShaderProgram(const std::string& vertexShaderSource, const std::str
 }
 
 void CreateGraphicsPipeline(){
-    std::string vertexShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"vertex.glsl");
-    std::string fragmentShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"fragment.glsl");
+    // std::string vertexShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"vertex.glsl");
+    // std::string fragmentShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"fragment.glsl");
+    std::string vertexShaderSource = LoadShaderAsString("./shaders/vertex.glsl");
+    std::string fragmentShaderSource = LoadShaderAsString("./shaders/fragment.glsl");
 
     gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }

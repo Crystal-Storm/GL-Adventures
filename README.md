@@ -26,4 +26,8 @@ Make sure that the following packages are installed:
 
 ## Notes
 
-At the moment I am still figuring everything out, and am choosing between glfw and sdl2 or 3 as the framework(?).
+The built file needs to be run in from the project directory, not the build directory.
+
+If you don't want to use CMake to compile, this command should work:
+
+"g++ -std=c++17 ./src/main.cpp ./lib/glad.c -o prog -I ./include/ -lmingw32 -lSDL2main -lSDL2"
