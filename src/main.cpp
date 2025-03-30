@@ -33,7 +33,12 @@ GLuint gIndexBufferObject = 0;
 // Program Object (for shader)
 GLuint gGraphicsPipelineShaderProgram = 0;
 
+// Main Loop
 bool gQuit = false;
+
+// Uniforms
+float guOffsetHorizontal=.0;
+float guOffsetVertical=.0;
 
 // Function to load shader source code from file
 std::string LoadShaderAsString(const std::string filename){
@@ -62,14 +67,14 @@ void VertexSpecification(){
     // Vertex Positions
     GLfloat vertexData[] = {
         // Triangle data for quad
-        -0.8f,-0.8f,0.0f, // Bottom Left
+        -0.5f,-0.5f,0.0f, // Bottom Left
         1.0f,0.0f,0.0f, // Red
-        0.8f,-0.8f,0.0f, // Bottom Right
+        0.5f,-0.5f,0.0f, // Bottom Right
         0.0f,1.0f,0.0f, // Green
-        -0.8f,0.8f,0.0f, // Top Left
+        -0.5f,0.5f,0.0f, // Top Left
         0.0f,0.0f,1.0f, // Blue
-        0.8f,0.8f,0.0f, // Top Right
-        0.0f,0.0f,0.0f, // Black
+        0.5f,0.5f,0.0f, // Top Right
+        0.5f,0.5f,0.5f, // Gray
     };
 
     GLuint indexData[] = {
@@ -238,6 +243,21 @@ void Input(){
             gQuit = true;
         }
     }
+
+    //Get keyboard state
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    if(state[SDL_SCANCODE_UP]){
+        guOffsetVertical+=.001;
+    }
+    if(state[SDL_SCANCODE_DOWN]){
+        guOffsetVertical-=.001;
+    }
+    if(state[SDL_SCANCODE_LEFT]){
+        guOffsetHorizontal-=.001;
+    }
+    if(state[SDL_SCANCODE_RIGHT]){
+        guOffsetHorizontal+=.001;
+    }
 }
 
 void PreDraw(){
@@ -249,7 +269,22 @@ void PreDraw(){
 
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+    // Use Shader Program
     glUseProgram(gGraphicsPipelineShaderProgram);
+    // Find uniform location
+    GLint locationHorizontal = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uOffsetHorizontal");
+    GLint locationVertical = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uOffsetVertical");
+    if (locationHorizontal>=0){
+        glUniform1f(locationHorizontal,guOffsetHorizontal);
+    } else {
+        std::cout << "Uniform not found, does name match?" << std::endl;
+    }
+    if (locationVertical>=0){
+        glUniform1f(locationVertical,guOffsetVertical);
+    } else {
+        std::cout << "Uniform not found, does name match?" << std::endl;
+    }
+
 }
 
 void Draw(){
