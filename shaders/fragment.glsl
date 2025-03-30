@@ -3,9 +3,6 @@
 in vec3 vertexColor;
 out vec4 color;
 
-uniform float uOffsetHorizontal;
-uniform float uOffsetVertical;
-
 void main(){
     color = vec4(vertexColor, 1.0f);
 }

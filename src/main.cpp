@@ -4,7 +4,12 @@
 #include <string>
 #include <fstream>
 #include <vector>
+
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
+// #define GLM_ENABLE_EXPERIMENTAL
+// #include <glm/gtx/string_cast.hpp>
 
 // Globals
 int gScreenWidth = 640;
@@ -36,9 +41,9 @@ GLuint gGraphicsPipelineShaderProgram = 0;
 // Main Loop
 bool gQuit = false;
 
-// Uniforms
-float guOffsetHorizontal=.0;
-float guOffsetVertical=.0;
+// Globals for Uniform
+float gOffsetHorizontal=.0;
+float gOffsetVertical=.0;
 
 // Function to load shader source code from file
 std::string LoadShaderAsString(const std::string filename){
@@ -247,16 +252,16 @@ void Input(){
     //Get keyboard state
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     if(state[SDL_SCANCODE_UP]){
-        guOffsetVertical+=.001;
+        gOffsetVertical+=.001;
     }
     if(state[SDL_SCANCODE_DOWN]){
-        guOffsetVertical-=.001;
+        gOffsetVertical-=.001;
     }
     if(state[SDL_SCANCODE_LEFT]){
-        guOffsetHorizontal-=.001;
+        gOffsetHorizontal-=.001;
     }
     if(state[SDL_SCANCODE_RIGHT]){
-        guOffsetHorizontal+=.001;
+        gOffsetHorizontal+=.001;
     }
 }
 
@@ -271,18 +276,18 @@ void PreDraw(){
 
     // Use Shader Program
     glUseProgram(gGraphicsPipelineShaderProgram);
+
+    // Create transformation matrix
+    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(gOffsetHorizontal,gOffsetVertical,0.0f));
+
     // Find uniform location
-    GLint locationHorizontal = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uOffsetHorizontal");
-    GLint locationVertical = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uOffsetVertical");
-    if (locationHorizontal>=0){
-        glUniform1f(locationHorizontal,guOffsetHorizontal);
+    GLint uTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTranslate");
+    // Set uniform
+    if (uTranslateLocation>=0){
+        glUniformMatrix4fv(uTranslateLocation,1,GL_FALSE,&translate[0][0]);
     } else {
         std::cout << "Uniform not found, does name match?" << std::endl;
-    }
-    if (locationVertical>=0){
-        glUniform1f(locationVertical,guOffsetVertical);
-    } else {
-        std::cout << "Uniform not found, does name match?" << std::endl;
+        exit(1);
     }
 
 }
