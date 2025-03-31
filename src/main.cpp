@@ -315,16 +315,27 @@ void PreDraw()
     glUseProgram(gGraphicsPipelineShaderProgram);
 
     // Create transformation matrix
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(-gOffsetX, 0.0f, -gOffsetZ));
+    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -gOffsetZ));
+    glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), gOffsetX, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gScreenWidth) / ((float)gScreenHeight), 0.1f, 10.0f);
 
     // Find uniform locations
     GLint uTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTranslate");
+    GLint uRotateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uRotate");
     GLint uPerspectiveLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uPerspective");
     // Set uniforms
     if (uTranslateLocation >= 0)
     {
         glUniformMatrix4fv(uTranslateLocation, 1, GL_FALSE, &translate[0][0]);
+    }
+    else
+    {
+        std::cout << "Translate uniform not found, does name match?" << std::endl;
+        exit(1);
+    }
+    if (uRotateLocation >= 0)
+    {
+        glUniformMatrix4fv(uRotateLocation, 1, GL_FALSE, &rotate[0][0]);
     }
     else
     {

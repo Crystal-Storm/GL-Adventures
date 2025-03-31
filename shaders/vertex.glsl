@@ -6,12 +6,13 @@ layout(location=1) in vec3 colors;
 out vec3 vertexColor;
 
 uniform mat4 uTranslate;
+uniform mat4 uRotate;
 uniform mat4 uPerspective;
 
 void main(){
     vertexColor = colors;
 
-    vec4 newPosition = uPerspective * uTranslate * vec4(position, 1.0f);
+    vec4 newPosition = uPerspective * uTranslate * uRotate  * vec4(position, 1.0f);
 
     gl_Position = newPosition;
 }
