@@ -1,3 +1,23 @@
+## What is this project?
+
+This project follows a youtube series created by Mike Shah, in which he teaches the concepts of what OpenGL is and how it is used.
+
+## What does it do?
+
+- At the momement the program renders a colored quad to the screen and is able to be interacted with using the arrow keys. Each time the project is executed, both shaders are recompiled meaning they can be modified between runs.
+
+## What did I learn?
+
+From creating this project I have learned:
+
+- Procedural C++ programming
+
+- What OpenGL is
+
+- What the graphics pipeline is
+
+- how to write simple GLSL shaders
+
 ## OpenGL installation
 
 ### Windows
