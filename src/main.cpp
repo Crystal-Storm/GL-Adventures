@@ -274,6 +274,13 @@ void Input()
             std::cout << "Goodbye!" << std::endl;
             gQuit = true;
         }
+        else if (e.type == SDL_MOUSEMOTION)
+        {
+            // Use relative mouse motion
+            int deltaX = e.motion.xrel;
+            int deltaY = e.motion.yrel;
+            gCamera.mouseLook(deltaX, deltaY);
+        }
     }
 
     float speed = 0.001f;
@@ -291,11 +298,11 @@ void Input()
     }
     if (state[SDL_SCANCODE_LEFT])
     {
-        // gCamera.moveLeft(speed);
+        gCamera.moveLeft(speed);
     }
     if (state[SDL_SCANCODE_RIGHT])
     {
-        // gCamera.moveRight(speed);
+        gCamera.moveRight(speed);
     }
 }
 
@@ -315,21 +322,21 @@ void PreDraw()
 
     // Create transformation matrix
     // glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -gOffsetZ));
-    glm::mat4 translate = gCamera.getViewMatrix();
+    glm::mat4 viewTranslate = gCamera.getViewMatrix();
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gScreenWidth) / ((float)gScreenHeight), 0.1f, 10.0f);
 
     // Find uniform locations
-    GLint uTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTranslate");
+    GLint uViewTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uViewTranslate");
     GLint uPerspectiveLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uPerspective");
 
     // Set uniforms
-    if (uTranslateLocation >= 0)
+    if (uViewTranslateLocation >= 0)
     {
-        glUniformMatrix4fv(uTranslateLocation, 1, GL_FALSE, &translate[0][0]);
+        glUniformMatrix4fv(uViewTranslateLocation, 1, GL_FALSE, &viewTranslate[0][0]);
     }
     else
     {
-        std::cout << "Translate uniform not found, does name match?" << std::endl;
+        std::cout << "View Translate uniform not found, does name match?" << std::endl;
         exit(1);
     }
 
@@ -356,6 +363,10 @@ void Draw()
 
 void MainLoop()
 {
+    // Move mouse to middle of screen
+    SDL_WarpMouseInWindow(gGraphicsApplicationWindow, gScreenWidth / 2, gScreenHeight / 2);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+
     while (!gQuit)
     {
         Input();

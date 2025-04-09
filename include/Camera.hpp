@@ -9,6 +9,7 @@ public:
     Camera(glm::vec3 eye, glm::vec3 viewDirection, glm::vec3 upVector);
     Camera();
     glm::mat4 getViewMatrix();
+    void mouseLook(int mouseX, int mouseY);
     void moveForward(float speed);
     void moveBackward(float speed);
     void moveLeft(float speed);
@@ -18,6 +19,7 @@ private:
     glm::vec3 eye;
     glm::vec3 viewDirection;
     glm::vec3 upVector;
+    glm::vec2 oldMousePos;
 };
 
 #endif
