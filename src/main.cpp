@@ -14,12 +14,6 @@
 // #define GLM_ENABLE_EXPERIMENTAL
 // #include <glm/gtx/string_cast.hpp>
 
-// Globals
-int gScreenWidth = 640;
-int gScreenHeight = 480;
-SDL_Window *gGraphicsApplicationWindow = nullptr;
-SDL_GLContext gOpenGLContext = nullptr;
-
 // Error checking
 static void GLClearError()
 {
@@ -40,18 +34,28 @@ static bool GLCheckError(const char *function, int line)
     x;              \
     GLCheckError(#x, __LINE__);
 
-// VAO, VBO, and IBO
-GLuint gVertexArrayObject = 0;
-GLuint gVertexBufferObject = 0;
-GLuint gIndexBufferObject = 0;
+struct App
+{
+    int mScreenWidth = 640;
+    int mScreenHeight = 480;
+    SDL_Window *mGraphicsApplicationWindow = nullptr;
+    SDL_GLContext mOpenGLContext = nullptr;
+    GLuint mGraphicsPipelineShaderProgram = 0;
+    bool mQuit = false;
+    Camera mCamera;
+};
 
-Camera gCamera;
+struct Mesh3D
+{
+    // VAO, VBO, and IBO
+    GLuint mVertexArrayObject = 0;
+    GLuint mVertexBufferObject = 0;
+    GLuint mIndexBufferObject = 0;
+};
 
-// Program Object (for shader)
-GLuint gGraphicsPipelineShaderProgram = 0;
-
-// Main Loop
-bool gQuit = false;
+// Globals
+App gApp;
+Mesh3D gMesh;
 
 float gSpinAngle = 0.0f;
 
@@ -84,7 +88,7 @@ void GetOpenGLVersionInfo()
 }
 
 // Function to set up vertex data and buffers
-void VertexSpecification()
+void VertexSpecification(Mesh3D *mesh)
 {
     // Vertex Positions
     GLfloat vertexData[] = {
@@ -104,19 +108,19 @@ void VertexSpecification()
         2, 1, 3};
 
     // Setup VAO
-    glGenVertexArrays(1, &gVertexArrayObject);
-    glBindVertexArray(gVertexArrayObject);
+    glGenVertexArrays(1, &mesh->mVertexArrayObject);
+    glBindVertexArray(mesh->mVertexArrayObject);
 
     // Setup VBO
-    glGenBuffers(1, &gVertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
+    glGenBuffers(1, &mesh->mVertexBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->mVertexBufferObject);
 
     // Send vertex data to GPU
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
     // Setup IBO
-    glGenBuffers(1, &gIndexBufferObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
+    glGenBuffers(1, &mesh->mIndexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->mIndexBufferObject);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
 
     // Locations
@@ -221,11 +225,11 @@ void CreateGraphicsPipeline()
     std::string vertexShaderSource = LoadShaderAsString("../shaders/vertex.glsl");
     std::string fragmentShaderSource = LoadShaderAsString("../shaders/fragment.glsl");
 
-    gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
+    gApp.mGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 
 // Function to initialize the SDL and OpenGL context
-void InitializeProgram()
+void InitializeProgram(App *app)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -240,17 +244,17 @@ void InitializeProgram()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    gGraphicsApplicationWindow = SDL_CreateWindow("SDL game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gScreenWidth, gScreenHeight, SDL_WINDOW_OPENGL);
+    app->mGraphicsApplicationWindow = SDL_CreateWindow("SDL game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, app->mScreenWidth, app->mScreenHeight, SDL_WINDOW_OPENGL);
 
-    if (gGraphicsApplicationWindow == nullptr)
+    if (app->mGraphicsApplicationWindow == nullptr)
     {
         std::cout << "SDL_Window was not able to be created" << std::endl;
         exit(1);
     }
 
-    gOpenGLContext = SDL_GL_CreateContext(gGraphicsApplicationWindow);
+    app->mOpenGLContext = SDL_GL_CreateContext(app->mGraphicsApplicationWindow);
 
-    if (gOpenGLContext == nullptr)
+    if (app->mOpenGLContext == nullptr)
     {
         std::cout << "OpenGL context not available" << std::endl;
         exit(1);
@@ -276,7 +280,7 @@ void Input()
         if (e.type == SDL_QUIT)
         {
             std::cout << "Goodbye!" << std::endl;
-            gQuit = true;
+            gApp.mQuit = true;
         }
         else if (e.type == SDL_MOUSEMOTION)
         {
@@ -284,7 +288,7 @@ void Input()
             {
                 int deltaX = e.motion.xrel;
                 int deltaY = e.motion.yrel;
-                gCamera.mouseLook(deltaX, deltaY);
+                gApp.mCamera.mouseLook(deltaX, deltaY);
             }
         }
         else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
@@ -308,19 +312,19 @@ void Input()
 
     if (state[SDL_SCANCODE_W])
     {
-        gCamera.moveForward(speed);
+        gApp.mCamera.moveForward(speed);
     }
     if (state[SDL_SCANCODE_S])
     {
-        gCamera.moveBackward(speed);
+        gApp.mCamera.moveBackward(speed);
     }
     if (state[SDL_SCANCODE_A])
     {
-        gCamera.moveLeft(speed);
+        gApp.mCamera.moveLeft(speed);
     }
     if (state[SDL_SCANCODE_D])
     {
-        gCamera.moveRight(speed);
+        gApp.mCamera.moveRight(speed);
     }
 }
 
@@ -330,25 +334,25 @@ void PreDraw()
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
-    glViewport(0, 0, gScreenWidth, gScreenHeight);
+    glViewport(0, 0, gApp.mScreenWidth, gApp.mScreenHeight);
     glClearColor(0.2f, 0.0f, 0.1f, 1.0f);
 
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
     // Use Shader Program
-    glUseProgram(gGraphicsPipelineShaderProgram);
+    glUseProgram(gApp.mGraphicsPipelineShaderProgram);
 
     gSpinAngle += 0.01f;
 
     // Create transformation matrices
     glm::mat4 globalTransform = glm::rotate(glm::mat4(1.0f), gSpinAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 viewSpace = gCamera.getViewMatrix();
-    glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gScreenWidth) / ((float)gScreenHeight), 0.1f, 10.0f);
+    glm::mat4 viewSpace = gApp.mCamera.getViewMatrix();
+    glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gApp.mScreenWidth) / ((float)gApp.mScreenHeight), 0.1f, 10.0f);
 
     glm::mat4 transforms = perspective * viewSpace * globalTransform;
 
     // Find uniform locations
-    GLint uTransformLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTransform");
+    GLint uTransformLocation = glGetUniformLocation(gApp.mGraphicsPipelineShaderProgram, "uTransform");
 
     // Set uniform
     if (uTransformLocation >= 0)
@@ -364,7 +368,7 @@ void PreDraw()
 
 void Draw()
 {
-    glBindVertexArray(gVertexArrayObject);
+    glBindVertexArray(gMesh.mVertexArrayObject);
 
     // glDrawArrays(GL_TRIANGLES,0,6);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -375,13 +379,13 @@ void Draw()
 void MainLoop()
 {
     // Move mouse to middle of screen
-    SDL_WarpMouseInWindow(gGraphicsApplicationWindow, gScreenWidth / 2, gScreenHeight / 2);
+    SDL_WarpMouseInWindow(gApp.mGraphicsApplicationWindow, gApp.mScreenWidth / 2, gApp.mScreenHeight / 2);
     SDL_SetRelativeMouseMode(SDL_TRUE);
     SDL_ShowCursor(SDL_FALSE);
 
     bool frameSafe = true;
 
-    while (!gQuit)
+    while (!gApp.mQuit)
     {
         // Start frame timer
         std::chrono::high_resolution_clock::time_point frameStart = std::chrono::high_resolution_clock::now();
@@ -391,7 +395,7 @@ void MainLoop()
         Draw();
 
         // Update screen
-        SDL_GL_SwapWindow(gGraphicsApplicationWindow);
+        SDL_GL_SwapWindow(gApp.mGraphicsApplicationWindow);
 
         // Calculate frame duration
         std::chrono::high_resolution_clock::time_point frameEnd = std::chrono::high_resolution_clock::now();
@@ -402,7 +406,7 @@ void MainLoop()
         {
             SDL_Delay(gFrameDuration - frameTime);
         }
-        else if (frameTime > gFrameDuration)
+        else if (frameSafe && frameTime > gFrameDuration)
         {
             std::cout << "Frame rate has dropped below " << gTargetFPS << " FPS" << std::endl;
             frameSafe = false;
@@ -413,7 +417,7 @@ void MainLoop()
 void CleanUp()
 {
     // Destroy the window
-    SDL_DestroyWindow(gGraphicsApplicationWindow);
+    SDL_DestroyWindow(gApp.mGraphicsApplicationWindow);
 
     // Quit SDL subsystems
     SDL_Quit();
@@ -422,10 +426,10 @@ void CleanUp()
 int main(int argc, char *argv[])
 {
     // Setup graphics program
-    InitializeProgram();
+    InitializeProgram(&gApp);
 
     // Set up geometry, VAO, and VBO
-    VertexSpecification();
+    VertexSpecification(&gMesh);
 
     // Create graphics pipeline
     // At the moment we set up the
