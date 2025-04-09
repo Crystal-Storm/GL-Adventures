@@ -216,10 +216,8 @@ GLuint CreateShaderProgram(const std::string &vertexShaderSource, const std::str
 
 void CreateGraphicsPipeline()
 {
-    // std::string vertexShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"vertex.glsl");
-    // std::string fragmentShaderSource = LoadShaderAsString(std::string(SHADER_PATH)+"fragment.glsl");
-    std::string vertexShaderSource = LoadShaderAsString("./shaders/vertex.glsl");
-    std::string fragmentShaderSource = LoadShaderAsString("./shaders/fragment.glsl");
+    std::string vertexShaderSource = LoadShaderAsString("../shaders/vertex.glsl");
+    std::string fragmentShaderSource = LoadShaderAsString("../shaders/fragment.glsl");
 
     gGraphicsPipelineShaderProgram = CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
@@ -302,23 +300,23 @@ void Input()
         }
     }
 
-    float speed = 0.001f;
+    float speed = 0.05f;
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-    if (state[SDL_SCANCODE_UP])
+    if (state[SDL_SCANCODE_W])
     {
         gCamera.moveForward(speed);
     }
-    if (state[SDL_SCANCODE_DOWN])
+    if (state[SDL_SCANCODE_S])
     {
         gCamera.moveBackward(speed);
     }
-    if (state[SDL_SCANCODE_LEFT])
+    if (state[SDL_SCANCODE_A])
     {
         gCamera.moveLeft(speed);
     }
-    if (state[SDL_SCANCODE_RIGHT])
+    if (state[SDL_SCANCODE_D])
     {
         gCamera.moveRight(speed);
     }

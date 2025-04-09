@@ -20,6 +20,7 @@ private:
     glm::vec3 viewDirection;
     glm::vec3 upVector;
     glm::vec2 oldMousePos;
+    glm::vec3 right;
 };
 
 #endif
