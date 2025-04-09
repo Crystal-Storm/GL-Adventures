@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include "Camera.hpp"
+
 // #define GLM_ENABLE_EXPERIMENTAL
 // #include <glm/gtx/string_cast.hpp>
 
@@ -42,15 +44,13 @@ GLuint gVertexArrayObject = 0;
 GLuint gVertexBufferObject = 0;
 GLuint gIndexBufferObject = 0;
 
+Camera gCamera;
+
 // Program Object (for shader)
 GLuint gGraphicsPipelineShaderProgram = 0;
 
 // Main Loop
 bool gQuit = false;
-
-// Globals for Uniform
-float gOffsetX = 0.0f;
-float gOffsetZ = 1.0f;
 
 // Function to load shader source code from file
 std::string LoadShaderAsString(const std::string filename)
@@ -276,27 +276,26 @@ void Input()
         }
     }
 
+    float speed = 0.001f;
+
     // Get keyboard state
     const Uint8 *state = SDL_GetKeyboardState(NULL);
+
     if (state[SDL_SCANCODE_UP])
     {
-        gOffsetZ -= 0.01f;
-        std::cout << "Z Offset: " << gOffsetZ << std::endl;
+        gCamera.moveForward(speed);
     }
     if (state[SDL_SCANCODE_DOWN])
     {
-        gOffsetZ += 0.01f;
-        std::cout << "Z Offset: " << gOffsetZ << std::endl;
+        gCamera.moveBackward(speed);
     }
     if (state[SDL_SCANCODE_LEFT])
     {
-        gOffsetX -= 0.01f;
-        std::cout << "X Offset: " << gOffsetX << std::endl;
+        // gCamera.moveLeft(speed);
     }
     if (state[SDL_SCANCODE_RIGHT])
     {
-        gOffsetX += 0.01f;
-        std::cout << "X Offset: " << gOffsetX << std::endl;
+        // gCamera.moveRight(speed);
     }
 }
 
@@ -315,14 +314,14 @@ void PreDraw()
     glUseProgram(gGraphicsPipelineShaderProgram);
 
     // Create transformation matrix
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -gOffsetZ));
-    glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), gOffsetX, glm::vec3(0.0f, 1.0f, 0.0f));
+    // glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -gOffsetZ));
+    glm::mat4 translate = gCamera.getViewMatrix();
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gScreenWidth) / ((float)gScreenHeight), 0.1f, 10.0f);
 
     // Find uniform locations
     GLint uTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTranslate");
-    GLint uRotateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uRotate");
     GLint uPerspectiveLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uPerspective");
+
     // Set uniforms
     if (uTranslateLocation >= 0)
     {
@@ -333,15 +332,7 @@ void PreDraw()
         std::cout << "Translate uniform not found, does name match?" << std::endl;
         exit(1);
     }
-    if (uRotateLocation >= 0)
-    {
-        glUniformMatrix4fv(uRotateLocation, 1, GL_FALSE, &rotate[0][0]);
-    }
-    else
-    {
-        std::cout << "Translate uniform not found, does name match?" << std::endl;
-        exit(1);
-    }
+
     if (uPerspectiveLocation >= 0)
     {
         glUniformMatrix4fv(uPerspectiveLocation, 1, GL_FALSE, &perspective[0][0]);

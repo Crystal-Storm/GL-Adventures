@@ -9,10 +9,10 @@ public:
     Camera(glm::vec3 eye, glm::vec3 viewDirection, glm::vec3 upVector);
     Camera();
     glm::mat4 getViewMatrix();
-    void moveForward();
-    void moveBackward();
-    void moveLeft();
-    void moveRight();
+    void moveForward(float speed);
+    void moveBackward(float speed);
+    void moveLeft(float speed);
+    void moveRight(float speed);
 
 private:
     glm::vec3 eye;

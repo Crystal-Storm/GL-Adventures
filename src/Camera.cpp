@@ -22,7 +22,19 @@ glm::mat4 Camera::getViewMatrix()
     return glm::lookAt(eye, viewDirection, upVector);
 }
 
-void Camera::moveForward() {}
-void Camera::moveBackward() {}
-void Camera::moveLeft() {}
-void Camera::moveRight() {}
+void Camera::moveForward(float speed)
+{
+    eye.z -= speed;
+}
+void Camera::moveBackward(float speed)
+{
+    eye.z += speed;
+}
+void Camera::moveLeft(float speed)
+{
+    eye.x -= speed;
+}
+void Camera::moveRight(float speed)
+{
+    eye.x += speed;
+}
