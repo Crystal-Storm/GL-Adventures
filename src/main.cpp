@@ -397,6 +397,7 @@ void MainLoop()
         else if (frameTime > gFrameDuration)
         {
             std::cout << "Frame rate has dropped below " << gTargetFPS << " FPS" << std::endl;
+            frameSafe = false;
         }
     }
 }
