@@ -8,7 +8,7 @@ find_package(SDL2 REQUIRED)
 include_directories(include/)
 
 # Add executable
-add_executable(opengl_project src/main.cpp lib/glad.c)
+add_executable(opengl_project src/main.cpp src/Camera.cpp lib/glad.c)
 
 # Link libraries
 target_link_libraries(opengl_project SDL2::SDL2main SDL2::SDL2)
