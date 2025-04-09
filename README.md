@@ -4,7 +4,7 @@ This project follows a youtube series created by Mike Shah, in which he teaches 
 
 ## What does it do?
 
-- At the momement the program renders a colored quad to the screen and you are able to move around relative to it using the WASD. The mouse starts as locked; this can be toggled with escape. I have almost finished implementing looking around with your mouse as well. Each time the program is executed, both shaders are recompiled meaning they can be modified between runs.
+At the momement the program renders a colored quad to the screen and you are able to move around relative to it using WASD. The mouse starts as locked; this can be toggled with escape. I have almost finished implementing looking around with your mouse as well. Each time the program is executed, both shaders are recompiled meaning they can be modified between runs.
 
 ## What did I learn?
 
@@ -52,6 +52,6 @@ Make sure that the following packages are installed:
 
 The built file needs to be run in from the build directory, not the project directory. The minimum files required are the project directory with a shaders and build directory. The build directory contains the compiled program. And the shaders directory contains a fragment and vertex shader.
 
-If you don't want to use CMake to compile, this command should work:
+If you don't want to use CMake to compile, running the following command in the build directory should create a program.
 
-"g++ -std=c++17 ./src/main.cpp ./lib/glad.c -o prog -I ./include/ -lmingw32 -lSDL2main -lSDL2"
+"g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lmingw32 -lSDL2main -lSDL2"
