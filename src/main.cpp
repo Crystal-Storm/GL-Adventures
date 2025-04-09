@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <chrono>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -51,6 +52,9 @@ GLuint gGraphicsPipelineShaderProgram = 0;
 
 // Main Loop
 bool gQuit = false;
+
+const int gTargetFPS = 60;
+const int gFrameDuration = 1000 / gTargetFPS;
 
 // Function to load shader source code from file
 std::string LoadShaderAsString(const std::string filename)
@@ -369,12 +373,31 @@ void MainLoop()
 
     while (!gQuit)
     {
+        // Start frame timer
+        std::chrono::high_resolution_clock::time_point frameStart = std::chrono::high_resolution_clock::now();
+
         Input();
         PreDraw();
         Draw();
 
         // Update screen
         SDL_GL_SwapWindow(gGraphicsApplicationWindow);
+
+        // Calculate frame duration
+        std::chrono::high_resolution_clock::time_point frameEnd = std::chrono::high_resolution_clock::now();
+        long long frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+        static bool frameSafe = true;
+
+        // Delay to maintain target frame rate
+        if (frameTime < gFrameDuration)
+        {
+            SDL_Delay(gFrameDuration - frameTime);
+        }
+        else if (frameTime > gFrameDuration)
+        {
+            std::cout << "Frame rate has dropped below " << gTargetFPS << " FPS" << std::endl;
+        }
     }
 }
 
