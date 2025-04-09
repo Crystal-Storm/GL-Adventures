@@ -10,7 +10,7 @@ Camera::Camera(glm::vec3 eye, glm::vec3 viewDirection, glm::vec3 upVector)
     this->eye = eye;
     this->viewDirection = viewDirection;
     this->upVector = upVector;
-    right = glm::normalize(glm::cross(viewDirection, upVector));
+    rightVector = glm::normalize(glm::cross(viewDirection, upVector));
 }
 
 Camera::Camera()
@@ -18,7 +18,7 @@ Camera::Camera()
     eye = glm::vec3(0.0f, 0.0f, 5.0f);
     viewDirection = glm::vec3(0.0f, 0.0f, -1.0f);
     upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-    right = glm::normalize(glm::cross(viewDirection, upVector));
+    rightVector = glm::normalize(glm::cross(viewDirection, upVector));
 }
 
 glm::mat4 Camera::getViewMatrix()
@@ -28,7 +28,7 @@ glm::mat4 Camera::getViewMatrix()
 
 void Camera::mouseLook(int deltaX, int deltaY)
 {
-    const float sensitivity = 0.0005f;
+    const float sensitivity = 0.001f;
 
     // Calculate yaw rotation matrix
     glm::mat4 yawRotation = glm::rotate(glm::mat4(1.0f), -deltaX * sensitivity, upVector);
@@ -38,7 +38,7 @@ void Camera::mouseLook(int deltaX, int deltaY)
 
     viewDirection = glm::normalize(viewDirection);
 
-    right = glm::normalize(glm::cross(viewDirection, upVector));
+    rightVector = glm::normalize(glm::cross(viewDirection, upVector));
 }
 
 void Camera::moveForward(float speed)
@@ -51,9 +51,9 @@ void Camera::moveBackward(float speed)
 }
 void Camera::moveLeft(float speed)
 {
-    eye -= right * speed;
+    eye -= rightVector * speed;
 }
 void Camera::moveRight(float speed)
 {
-    eye += right * speed;
+    eye += rightVector * speed;
 }

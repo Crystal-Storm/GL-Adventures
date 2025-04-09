@@ -53,6 +53,8 @@ GLuint gGraphicsPipelineShaderProgram = 0;
 // Main Loop
 bool gQuit = false;
 
+float gSpinAngle = 0.0f;
+
 const int gTargetFPS = 60;
 const int gFrameDuration = 1000 / gTargetFPS;
 
@@ -300,7 +302,7 @@ void Input()
         }
     }
 
-    float speed = 0.05f;
+    float speed = 0.1f;
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
@@ -336,33 +338,26 @@ void PreDraw()
     // Use Shader Program
     glUseProgram(gGraphicsPipelineShaderProgram);
 
-    // Create transformation matrix
-    // glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -gOffsetZ));
-    glm::mat4 viewTranslate = gCamera.getViewMatrix();
+    gSpinAngle += 0.01f;
+
+    // Create transformation matrices
+    glm::mat4 globalTransform = glm::rotate(glm::mat4(1.0f), gSpinAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 viewSpace = gCamera.getViewMatrix();
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), ((float)gScreenWidth) / ((float)gScreenHeight), 0.1f, 10.0f);
 
+    glm::mat4 transforms = perspective * viewSpace * globalTransform;
+
     // Find uniform locations
-    GLint uViewTranslateLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uViewTranslate");
-    GLint uPerspectiveLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uPerspective");
+    GLint uTransformLocation = glGetUniformLocation(gGraphicsPipelineShaderProgram, "uTransform");
 
-    // Set uniforms
-    if (uViewTranslateLocation >= 0)
+    // Set uniform
+    if (uTransformLocation >= 0)
     {
-        glUniformMatrix4fv(uViewTranslateLocation, 1, GL_FALSE, &viewTranslate[0][0]);
+        glUniformMatrix4fv(uTransformLocation, 1, GL_FALSE, &transforms[0][0]);
     }
     else
     {
-        std::cout << "View Translate uniform not found, does name match?" << std::endl;
-        exit(1);
-    }
-
-    if (uPerspectiveLocation >= 0)
-    {
-        glUniformMatrix4fv(uPerspectiveLocation, 1, GL_FALSE, &perspective[0][0]);
-    }
-    else
-    {
-        std::cout << "Perspective uniform not found, does name match?" << std::endl;
+        std::cout << "Transform uniform not found, does name match?" << std::endl;
         exit(1);
     }
 }
@@ -384,6 +379,8 @@ void MainLoop()
     SDL_SetRelativeMouseMode(SDL_TRUE);
     SDL_ShowCursor(SDL_FALSE);
 
+    bool frameSafe = true;
+
     while (!gQuit)
     {
         // Start frame timer
@@ -399,8 +396,6 @@ void MainLoop()
         // Calculate frame duration
         std::chrono::high_resolution_clock::time_point frameEnd = std::chrono::high_resolution_clock::now();
         long long frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
-
-        static bool frameSafe = true;
 
         // Delay to maintain target frame rate
         if (frameTime < gFrameDuration)
