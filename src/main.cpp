@@ -280,16 +280,30 @@ void Input()
         }
         else if (e.type == SDL_MOUSEMOTION)
         {
-            // Use relative mouse motion
-            int deltaX = e.motion.xrel;
-            int deltaY = e.motion.yrel;
-            gCamera.mouseLook(deltaX, deltaY);
+            if (SDL_GetRelativeMouseMode())
+            {
+                int deltaX = e.motion.xrel;
+                int deltaY = e.motion.yrel;
+                gCamera.mouseLook(deltaX, deltaY);
+            }
+        }
+        else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+        {
+            if (SDL_GetRelativeMouseMode())
+            {
+                SDL_SetRelativeMouseMode(SDL_FALSE);
+                SDL_ShowCursor(SDL_TRUE);
+            }
+            else
+            {
+                SDL_SetRelativeMouseMode(SDL_TRUE);
+                SDL_ShowCursor(SDL_FALSE);
+            }
         }
     }
 
     float speed = 0.001f;
 
-    // Get keyboard state
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
     if (state[SDL_SCANCODE_UP])
@@ -370,6 +384,7 @@ void MainLoop()
     // Move mouse to middle of screen
     SDL_WarpMouseInWindow(gGraphicsApplicationWindow, gScreenWidth / 2, gScreenHeight / 2);
     SDL_SetRelativeMouseMode(SDL_TRUE);
+    SDL_ShowCursor(SDL_FALSE);
 
     while (!gQuit)
     {
