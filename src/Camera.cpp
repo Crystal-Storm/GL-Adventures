@@ -21,7 +21,7 @@ Camera::Camera()
 
 glm::mat4 Camera::getViewMatrix()
 {
-    return glm::lookAt(eye, viewDirection, upVector);
+    return glm::lookAt(eye, eye + viewDirection, upVector);
 }
 
 void Camera::mouseLook(int deltaX, int deltaY)
@@ -31,18 +31,8 @@ void Camera::mouseLook(int deltaX, int deltaY)
     // Calculate yaw rotation matrix
     glm::mat4 yawRotation = glm::rotate(glm::mat4(1.0f), glm::radians(-deltaX * sensitivity), upVector);
 
-    glm::vec3 right = glm::normalize(glm::cross(viewDirection, upVector));
-    glm::mat4 pitchRotation = glm::rotate(glm::mat4(1.0f), glm::radians(-deltaY * sensitivity), right);
-
     // Apply rotations to viewDirection
-    viewDirection = glm::vec3(yawRotation * pitchRotation * glm::vec4(viewDirection, 0.0f));
-
-    // Clamp pitch
-    float pitch = glm::degrees(asin(viewDirection.y));
-    if (pitch > 89.0f)
-        viewDirection.y = sin(glm::radians(89.0f));
-    else if (pitch < -89.0f)
-        viewDirection.y = sin(glm::radians(-89.0f));
+    viewDirection = glm::vec3(yawRotation * glm::vec4(viewDirection, 0.0f));
 
     viewDirection = glm::normalize(viewDirection);
 }
