@@ -52,6 +52,9 @@ Make sure that the following packages are installed:
 
 The built file needs to be run in from the build directory, not the project directory. The minimum files required are the project directory with a shaders and build directory. The build directory contains the compiled program. And the shaders directory contains a fragment and vertex shader.
 
-If you don't want to use CMake to compile, running the following command in the build directory should create a program.
+Running the following command should create an executable.
 
-"g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lmingw32 -lSDL2main -lSDL2"
+Windows:
+```g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lmingw32 -lSDL2main -lSDL2```
+Linux:
+```g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lSDL2main -lSDL2```
