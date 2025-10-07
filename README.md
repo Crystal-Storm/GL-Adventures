@@ -56,5 +56,6 @@ Running the following command should create an executable.
 
 Windows:
 ```g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lmingw32 -lSDL2main -lSDL2```
+
 Linux:
 ```g++ -std=c++17 ../src/*.cpp ../lib/glad.c -o prog -I ../include/ -lSDL2main -lSDL2```
